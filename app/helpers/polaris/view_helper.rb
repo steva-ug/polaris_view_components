@@ -100,14 +100,18 @@ module Polaris
     end
 
     def polaris_icon_source(name)
-      path = ViewComponents::Engine.root.join("app", "assets", "icons", "polaris", "#{name}.svg")
-      file = File.read(path)
-      doc = Nokogiri::HTML::DocumentFragment.parse(file)
-      svg = doc.at_css "svg"
-      svg[:class] = "Polaris-Icon__Svg"
-      svg[:focusable] = false
-      svg[:"aria-hidden"] = true
-      doc.to_html.html_safe
+      if name.include? 'fa-'
+        "<i class=\"fa #{name}\"></i>".html_safe
+      else
+        path = ViewComponents::Engine.root.join("app", "assets", "icons", "polaris", "#{name}.svg")
+        file = File.read(path)
+        doc = Nokogiri::HTML::DocumentFragment.parse(file)
+        svg = doc.at_css "svg"
+        svg[:class] = "Polaris-Icon__Svg"
+        svg[:focusable] = false
+        svg[:"aria-hidden"] = true
+        doc.to_html.html_safe
+      end
     end
 
     def polaris_html_styles
